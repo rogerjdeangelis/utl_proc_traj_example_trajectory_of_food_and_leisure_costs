@@ -1,7 +1,6 @@
 # utl_proc_traj_example_trajectory_of_food_and_leisure_costs
 Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join merge big data analytics macros oracle teradata mysql sas communities stackoverflow statistics artificial inteligence AI Python R Java Javascript WPS Matlab SPSS Scala Perl C C# Excel MS Access JSON graphics maps NLP natural language processing machine learning igraph DOSUBL DOW loop stackoverflow SAS community.
     Proc Traj example Trajectory of Food and Leisure Costs
-
     *******************************************************************************************************************;
     *                                                                                                                 *;
     *  PROJECT TOKEN = taj                                                                                            *;
@@ -28,7 +27,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     *                                                                                                                 *;
     *; %let inp001=d:/taj/taj_simulate;   * then only data input;                                                     *;
     *                                                                                                                 *;
-    *; %let z=%str(                    );       * used with slides;                                                   *;
+    *; %let z=%str(                    );       * used with slides;                                                   *;
     *; %let b=%str(font_weight=bold);                                                                                 *;
     *; %let c=%str(font_face="Courier New");                                                                          *;
     *; %let f=%str(font_face="Arial");                                                                                *;
@@ -65,9 +64,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     *                                                                                                                 *;
     *  OUTPUTS                                                                                                        *;
     *  =======                                                                                                        *;
-    *;                                                                                                               ;*;
-    *;   %let outpdf=d:\taj\pdf\&pgm._xxxx.pdf * onr pdf per slide;                                                  ;*;
-    *;                                                                                                               ;*;
+    *    Individual PDF to be                                                                                         *;
     *    You can esily combine the individiual PDFs into word or use Adobe or fre tools to combine all the pdfs.     ;*;
     *;                                                                                                               ;*;
     *                                                                                                                 *;
@@ -78,7 +75,6 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     | '_ ` _ \ / _` |/ __| '__/ _ \/ __|
     | | | | | | (_| | (__| | | (_) \__ \
     |_| |_| |_|\__,_|\___|_|  \___/|___/
-
     ;
     %Macro utl_pdflan100
         (
@@ -347,6 +343,55 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
 
     %Mend Tut_Sly;
 
+    %macro utlfkil
+        (
+        utlfkil
+        ) / des="delete an external file";
+
+
+        /*-------------------------------------------------*\
+        |                                                   |
+        |  Delete an external file                          |
+        |   From SAS macro guide                                                |
+        |  Sample invocations                               |
+        |                                                   |
+        |  WIN95                                            |
+        |  %utlfkil(c:\dat\utlfkil.sas);                    |
+        |                                                   |
+        |                                                   |
+        |  Solaris 2.5                                      |
+        |  %utlfkil(/home/deangel/delete.dat);              |
+        |                                                   |
+        |                                                   |
+        |  Roger DeAngelis                                  |
+        |                                                   |
+        \*-------------------------------------------------*/
+
+        %local urc;
+
+        /*-------------------------------------------------*\
+        | Open file   -- assign file reference              |
+        \*-------------------------------------------------*/
+
+        %let urc = %sysfunc(filename(fname,%quote(&utlfkil)));
+
+        /*-------------------------------------------------*\
+        | Delete file if it exits                           |
+        \*-------------------------------------------------*/
+
+        %if &urc = 0 and %sysfunc(fexist(&fname)) %then
+            %let urc = %sysfunc(fdelete(&fname));
+
+        /*-------------------------------------------------*\
+        | Close file  -- deassign file reference            |
+        \*-------------------------------------------------*/
+
+        %let urc = %sysfunc(filename(fname,''));
+
+      run;
+
+    %mend utlfkil;
+
 
     %macro utl_boxpdf2ppt(inp=&outpdf001,out=&outppt001)/des="www.boxoft.con pdf to ppt";
       data _null_;
@@ -366,7 +411,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
        ENDCOMP;
     %MEND greenbar;
 
-    %macro pdfbeg(rules=all,frame=box,pdf=&outpdf);
+    %macro pdfbeg(rules=all,frame=box,pdf=);
         %*utlnopts;
         title;
         footnote;
@@ -374,7 +419,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
         ods listing close;
         ods pdf close;
         ods path work.templat(update) sasuser.templat(update) sashelp.tmplmst(read);
-        %utlfkil(&pdf..pdf);
+        %utlfkil(&outpdf);
         ods noptitle;
         ods escapechar='^';
         ods listing close;
@@ -391,7 +436,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
        lyn=strip(_infile_);
        file print;
        put lyn "^{newline}" @;
-       call execute(_infile_);
+       *call execute(_infile_);
     %mend codebegin;
 
 
@@ -404,7 +449,6 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
        run;quit;
     %mend pdfend;
 
-
     *_                _
     | |__   ___  __ _(_)_ __
     | '_ \ / _ \/ _` | | '_ \
@@ -415,7 +459,6 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     | '_ \ / _ \| '__| '_ ` _ \ / _` | | |_  / _ \
     | | | | (_) | |  | | | | | | (_| | | |/ /  __/
     |_| |_|\___/|_|  |_| |_| |_|\__,_|_|_/___\___|
-
     ;
 
     * the input looks like this;
@@ -425,7 +468,6 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     TAJ.TAJ_SIMULATE total obs=500 12 Months
                                                                  PAY
      ID  AGE  SMOKER  CARBS  GENDER  T1  T2  T3 ..T12     _1   _2   _3 .. _12
-
       1   34     1     -10      0     1   2   3 .. 12    783  808  796 .. 795
       2   29     1     -11      0     1   2   3 .. 12    817  816  833 .. 747
       3   40     0      -9      0     1   2   3 .. 12    820  813  793 .. 837
@@ -450,9 +492,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
 
     /*
     p to 40 obs TAJ.TAJ_SIMNRM total obs=6,000
-
     Obs    ID    AGE    SMOKER    CARBS    GENDER    PAY    MTH
-
       1     1     34       1       -10        0      783      1
       2     1     34       1       -10        0      808      2
       3     1     34       1       -10        0      796      3
@@ -466,10 +506,9 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     / __| | |/ _` |/ _ \/ __|
     \__ \ | | (_| |  __/\__ \
     |___/_|_|\__,_|\___||___/
-
     ;
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl0000.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl0000.pdf);
     %Tut_Sly
        (
         stop=14
@@ -482,7 +521,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     %pdfend;
 
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1100.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1100.pdf);
     proc sgplot data=taj.taj_simNrm;
     title "Slide 1010 Overall 12 Month Histogram of Payments" ;
     label pay="Payments Food and Leisure";
@@ -492,13 +531,11 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     run;quit;
     %pdfend;
 
-    /*
     * percent of total pay in the top 5% by month;
     * since we have exactly 500 in each month the top 10% will at 450 and above;
     proc sort data=taj.taj_simNrm out=taj_simNrmSrt;
      by mth pay;
     run;quit;
-
     data taj.taj_simNrmSum;
       retain cnt paySum payTot 0;
       set taj_simNrmSrt(keep=mth pay);
@@ -515,9 +552,8 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
          payTot=0;
       end;
     run;quit;
-    */
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1200.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1200.pdf);
     proc report data=taj.taj_simNrmSum missing nowd list split="#";
        cols ("Figure 1200 Percent of Monthly Payments in the Top 5 Percent by Month"
     mth cnt payTot cnt5pct paySum payPct) _row;
@@ -536,21 +572,21 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
      / __| | | | / __| __/ _ \ '__|
     | (__| | |_| \__ \ ||  __/ |
      \___|_|\__,_|___/\__\___|_|
-
     ;
-
-    /*
 
     * all data;
     proc fastclus data=taj_simNrmSrt out=taj.&pgm._cusAll maxiter=10 maxc=3;
     var pay;
     run;quit;
+
+    /*
                                RMS Std
     Cluster     Frequency    Deviation
     ------------------------------------
        1             1632      23.7124
        2             2940      16.9074
        3             1428      25.2108
+    */
 
     data taj.&pgm._cusAllx;
        set taj.&pgm._cusAll;
@@ -559,16 +595,14 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
          when (2) clus2=pay;
          when (3) clus3=pay;
        end;
-       keep clus1-clus3 cluster;
+       keep clus1-clus3 cluster pay;
     run;quit;
 
     proc sort data=taj.&pgm._cusAllx;
     by cluster pay;
     run;quit;
 
-    */
-
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1300.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1300.pdf);
     proc sgplot data=taj.&pgm._cusAllx;
     title1 "Figure 1300 Overall Clusters";
     title2 "All data";
@@ -580,17 +614,14 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     %pdfend;
 
     * cluster trajectories;
-    /*
-
     proc summary data=taj.&pgm._cusAll nway;
     class mth cluster;
     var pay;
     output out=taj.&pgm._cusAllSum mean=;
     run;quit;
-    */
 
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1400.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1400.pdf);
     proc sgplot data=taj.&pgm._cusAllSum ;
     title "Figure 1400 Trajectory of 3 Clusters";
     format pay dollar9.;
@@ -605,7 +636,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     %pdfend;
 
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1500.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1500.pdf);
     %Tut_Sly
        (
         stop=21
@@ -637,19 +668,57 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     | '_ ` _ \ / _ \ / _` |/ _ \ |
     | | | | | | (_) | (_| |  __/ |
     |_| |_| |_|\___/ \__,_|\___|_|
-
     ;
 
     title;
     footnote;
     %utl_pdflan100(fixedfont=11pt);
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1510.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1510.pdf);
     %codebegin;
     cards4;
 
     *;
     * PROC TRAJ MULTIPLE MODELS;
     *;
+
+    %macro cmmi_mdlchk(mdl);
+
+    %let cmpMdl=%sysfunc(compress(&mdl));
+
+    proc traj data = taj.taj_simulate
+           outplot =   taj.taj_mdlPlot12_&cmpMdl
+           outest  =    taj.taj_mdlEst12_&cmpMdl
+           outstat =   taj.taj_mdlStat12_&cmpMdl
+               out = taj.taj_mdlDetail12_&cmpMdl ci95M;
+      model order&cmpmdl;
+      id id;
+      var _1-_12 ;
+      risk  smoker carbs ;
+      indep t1-t12;
+      order &mdl;
+      min 600;
+      max 1000;
+      model cnorm;
+    run;quit;
+
+    %mend cmmi_mdlchk;
+
+    %*cmmi_mdlchk(1 1    );
+    %*cmmi_mdlchk(1 1 1  );
+    %*cmmi_mdlchk(2 1 1 1);
+    %*cmmi_mdlchk(1 1 1 1);
+    %*cmmi_mdlchk(1 1 2  );
+    %*cmmi_mdlchk(1 2 1  );
+    %*cmmi_mdlchk(1 2 2  );
+    %*cmmi_mdlchk(2 1 1  );
+    %*cmmi_mdlchk(2 1 2  );
+    %*cmmi_mdlchk(2 2 1  );
+    %*cmmi_mdlchk(2 2 2  );
+    %*cmmi_mdlchk(2 2 2 2);
+    ;;;;
+    run;quit;
+    %pdfend;
+    %utl_pdflan100;  * reset;
 
     %macro cmmi_mdlchk(mdl);
 
@@ -687,10 +756,8 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     %cmmi_mdlchk(2 2 2 2);
     ;;;;
     run;quit;
-    %pdfend;
-    %utl_pdflan100;  * reset;
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1550.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1550.pdf);
     %Tut_Sly
        (
         stop=38
@@ -727,7 +794,6 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     | '__/ _ \/ __| |/ _` | | | |/ _` | / __|
     | | |  __/\__ \ | (_| | |_| | (_| | \__ \
     |_|  \___||___/_|\__,_|\__,_|\__,_|_|___/
-
     ;
 
     /* inputs
@@ -800,7 +866,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
                  |___/
     ;
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1520.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1520.pdf);
     %Tut_Sly
        (
         stop=7
@@ -814,7 +880,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
 
 
     %utl_pdflan100(fixedfont=11pt);
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1530.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1530.pdf);
     %codebegin;
     cards4;
     data &pgm._bic2;
@@ -841,7 +907,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
 
 
     %utl_pdflan100(fixedfont=11pt);
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1540.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1540.pdf);
     %codebegin;
     cards4;
     data taj.&pgm._bicfits;
@@ -881,7 +947,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
      by val;
     run;quit;
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1700.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1700.pdf);
     title1 "Figure 1700 Comparison of Models Bigger is Better";
     title2 "Three and Four Trajectory Models 1-Linear 2-Quadratic";
     proc sgplot data=taj.&pgm._bicfitsrt;
@@ -899,10 +965,9 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     | |_| | __| \ \ / /  / _ \| '_ \/ __|/ _ \ '__\ \ / / _ \/ _` |
     |  _| | |_   \ V /  | (_) | |_) \__ \  __/ |   \ V /  __/ (_| |
     |_| |_|\__|   \_/    \___/|_.__/|___/\___|_|    \_/ \___|\__,_|
-
     ;
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1800.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1800.pdf);
     %Tut_Sly
        (
         stop=5
@@ -911,20 +976,16 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
        );
     %pdfend;
 
-
-    /*
     * model 211;
     proc transpose data=taj.taj_mdlPlot12_211 out=&pgm._mdlPlot12_211(rename=(_name_=grp col1=pay));
     by t;
     var pred1 pred2 pred3 avg1 avg2 avg3;
     run;quit;
-
     proc sort data=&pgm._mdlPlot12_211  out=taj.&pgm._mdlPlot12_211plt;
     by t;
     run;quit;
-    */
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1900.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl1900.pdf);
     proc sgplot data=taj.&pgm._mdlPlot12_211plt  noautolegend;
     title1 "Figure 1900 Model 211 Best Fit Trajectories Payments";
     format pay dollar12.;
@@ -940,9 +1001,8 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     %pdfend;
 
 
-    /*
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2000.pdf,sep=Y);
-    proc sgplot data=taj.&pgm._mdlPlot12_2111plt  noautolegend;
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2000.pdf);
+    proc sgplot data=taj.&pgm._mdlPlot12_211plt  noautolegend;
     title1 "Figure 2000 Model 2111 Best Fit Trajectories Payments";
     format pay dollar12.;
     label t="Month";
@@ -955,7 +1015,6 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     valueattrs=(size=12);
     run;quit;
     %pdfend;
-    */
 
     *          _                _               _  __
      _ __ ___ (_)___ ___    ___| | __ _ ___ ___(_)/ _|_   _
@@ -965,9 +1024,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
                                                       |___/
     ;
 
-    /*
     * probabilites of each of the four trajectories;
-
     data taj.&pgm._prbmz;
        set
         taj.taj_mdlDetail12_2111(keep=grp1prb grp2prb grp3prb grp4prb group in=N)
@@ -985,8 +1042,6 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
         end;
         keep fro group typ val;
     run;quit;
-
-
     ods trace on;
     ods exclude all;
     ods output summary=taj.&pgm._prbsum(drop=_: variable);;
@@ -996,21 +1051,17 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     run;quit;
     ods select all;
     ods trace off;
-
     %utl_gather(taj.&pgm._prbsum,varx,valx,fro typ,taj.&pgm._prbxpo,valformat=9.);
-
     proc transpose data=taj.&pgm._prbxpo out=taj.&pgm._prbxxo;
     by fro typ;
     id varx;
     var valx;
     run;quit;
 
-
+    /*
      TAJ.TAJ_210MDL_PRBXXO total obs=4 40 obs printed
-
                                  LOG0_     LOG0_     LOG0_     LOG0_
      Obs      typ      _NAME_    0NObs     0Mean     MNObs     MMean
-
       1     GRP1PRB     valx      8073    0.95443    16070    0.85369
       2     GRP2PRB     valx      6180    0.89093    18036    0.78203
       3     GRP3PRB     valx     28294    0.89986    14835    0.81451
@@ -1021,7 +1072,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
 
     options orientation=landscape;
     ods escapechah='^';
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2100.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2100.pdf);
      proc report data=taj.&pgm._prbxxo(drop=_:) nowd missing split='#' style(header)={font_weight=bold};  ;
      COLUMN  ("^S={ just=l font_size=15pt font_face=arial}
     Figure 2100 Classification seems a little more Accurate for the 211 model ^{newline}
@@ -1033,32 +1084,22 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
      DEFINE  Mean / display FORMAT= 5.2      center "^S={just=center}Probability" ;
      break after fro / skip;
      compute after fro;
-       lyn="  ";
+       lyn="  ";
        line lyn $2.;
      endcomp;
     run;quit;
     %pdfend;
 
-    exp(3)
 
     *                    _      _       _        _
      _ __ ___   ___   __| | ___| |  ___| |_ __ _| |_ ___
     | '_ ` _ \ / _ \ / _` |/ _ \ | / __| __/ _` | __/ __|
     | | | | | | (_) | (_| |  __/ | \__ \ || (_| | |_\__ \
     |_| |_| |_|\___/ \__,_|\___|_| |___/\__\__,_|\__|___/
-
     ;
 
-    * residuals;
-    /*
-    data taj.&pgm._mon5hi;
-       set taj.taj_mdlDetailm44444(where=(group=5) keep=_1 group);
-       resid_pay=exp(_1)-2008.83;
-       resid_logpay=_1-7.60531;
-    run;quit;
-    */
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2200.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2200.pdf);
     %Tut_Sly
        (
         stop=18
@@ -1082,7 +1123,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
 
 
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2300.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2300.pdf);
     %Tut_Sly
        (
         stop=34
@@ -1117,7 +1158,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     );
     %pdfend;
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2400.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2400.pdf);
     %Tut_Sly
        (
         stop=22
@@ -1141,7 +1182,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     %pdfend;
 
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2500.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2500.pdf);
     %Tut_Sly
        (
         stop=33
@@ -1179,7 +1220,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     %pdfend;
 
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2600.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2600.pdf);
     %Tut_Sly
        (
         stop=12
@@ -1195,7 +1236,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     %pdfend;
 
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2700.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2700.pdf);
     %Tut_Sly
        (
         stop=31
@@ -1224,7 +1265,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     %pdfend;
 
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2800.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2800.pdf);
     %Tut_Sly
        (
         stop=41
@@ -1267,7 +1308,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     );
     %pdfend;
 
-    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2900.pdf,sep=Y);
+    %pdfbeg(pdf=d:/taj/pdf/&pgm._tbl2900.pdf);
     %Tut_Sly
        (
         stop=46
@@ -1324,10 +1365,9 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     | (__| | | |   <  | | | | (_) | |  | | | | | | (_| | | |/ /  __/ (_| |
      \___|_| |_|_|\_\ |_| |_|\___/|_|  |_| |_| |_|\__,_|_|_/___\___|\__,_|
 
-    ;
     see  https://github.com/rogerjdeangelis/voodoo
     ;
-
+                    ;;;;/*'*/ *);*};*];*/;/*"*/;%mend;run;quit;%end;end;run;endcomp;%utlfix;
     * Overall trajectory of means;
 
     proc sql;
@@ -1349,7 +1389,6 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     plot  avg*mth="*";
     run;quit;
     options ls=171  ps=66;
-
     AVG |
     810 +
         |       Plot of Mean Pay by Month
@@ -1370,10 +1409,7 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
         |
         --+--+--+--+--+--+--+--+--+--+--+--+-
           1  2  3  4  5  6  7  8  9 10 11 12
-
                          MTH
-
-
                           Histogram (All Pay)                #  Boxplot
     990+*                                                    1     0
        .*                                                    7     0
@@ -1396,21 +1432,14 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     630+*                                                    2     0
         ----+----+----+----+----+----+----+----+----+---
         * may represent up to 22 counts
-
-
     /*
-
     * lets run the varification and validation macro on the normalized data;
     * add one char var voodoo requires at least one char and one numeric;
-
     data &pgm._vooDoo;
       retain a 'A';
       set taj.taj_simNrm;
     run;quit;
-
-
     %include "c:/oto/oto_voodoo.sas";
-
     %utlvdoc
         (
         libname        = work
@@ -1435,27 +1464,18 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
         ,printto       = d:\taj\vdo\&data..txt
         ,Cleanup       = 1
         );
-
      sample output
-
-
     Variable Correlations (Spearman Strongest)
-
                 Correlated    Correlation    Number
     Variable       With           Coef       of Obs
-
      PAY          CARBS         0.43731       6000
      PAY          AGE           0.15993       6000
      PAY          SMOKER        0.13536       6000
      CARBS        AGE           0.10728       6000
      MTH          PAY           0.07191       6000
-
-
     There are no missing values
-
      #     Variable        Unique Values
     ---    --------        -------------
-
       2    AGE                       31
       3    CARBS                     15
       4    GENDER                     2
@@ -1463,8 +1483,6 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
       6    MTH                       12
       7    PAY                      285
       8    SMOKER                     2
-
-
                             N
     Variable       N    Miss         Minimum         Maximum            Mean          Median         Std Dev             Sum
     ------------------------------------------------------------------------------------------------------------------------
@@ -1483,13 +1501,9 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
      \__,_|\__, |\___|
            |___/
     ;
-
     Variable:  AGE
-
     Quantiles (Definition 5)
-
     Level         Quantile
-
     100% Max          52.0
     99%               49.5
     95%               46.0
@@ -1501,21 +1515,14 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     5%                29.0
     1%                26.0
     0% Min            19.0
-
-
             Extreme Observations
-
     ----Lowest----        ----Highest---
-
     Value      Obs        Value      Obs
-
        19     2808           52     2636
        19     2807           52     2637
        19     2806           52     2638
        19     2805           52     2639
        19     2804           52     2640
-
-
                           Histogram                          #  Boxplot
      53+*                                                   12     0
        .***                                                 48     |
@@ -1537,22 +1544,16 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
      19+*                                                   12     0
         ----+----+----+----+----+----+----+----+----+---
         * may represent up to 20 counts
-
     *               _
       ___ __ _ _ __| |__  ___
      / __/ _` | '__| '_ \/ __|
     | (_| (_| | |  | |_) \__ \
      \___\__,_|_|  |_.__/|___/
-
     ;
     The UNIVARIATE Procedure
     Variable:  CARBS
-
-
     Quantiles (Definition 5)
-
     Level         Quantile
-
     100% Max          -3.0
     99%               -4.0
     95%               -6.0
@@ -1564,20 +1565,14 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     5%               -14.0
     1%               -15.0
     0% Min           -17.0
-
             Extreme Observations
-
     ----Lowest----        ----Highest---
-
     Value      Obs        Value      Obs
-
       -17     5340           -3     4820
       -17     5339           -3     4821
       -17     5338           -3     4822
       -17     5337           -3     4823
       -17     5336           -3     4824
-
-
                               Histogram                          #  Boxplot
        -2.5+*                                                   12     0
            .***                                                 60     0
@@ -1597,7 +1592,6 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
       -17.5+
             ----+----+----+----+----+----+----+----+----+---
             * may represent up to 24 counts
-
     *
      _ __   __ _ _   _
     | '_ \ / _` | | | |
@@ -1605,15 +1599,10 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     | .__/ \__,_|\__, |
     |_|          |___/
     ;
-
     The UNIVARIATE Procedure
     Variable:  PAY
-
-
     Quantiles (Definition 5)
-
     Level         Quantile
-
     100% Max           981
     99%                909
     95%                871
@@ -1625,20 +1614,14 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     5%                 717
     1%                 686
     0% Min             627
-
             Extreme Observations
-
     ----Lowest----        ----Highest---
-
     Value      Obs        Value      Obs
-
       627     3319          972     1813
       636     2256          974     3241
       647     5913          976     1814
       647      861          978     1345
       651     5384          981     3733
-
-
                               Histogram                          #  Boxplot
         990+*                                                    1     0
            .*                                                    7     0
@@ -1661,27 +1644,19 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
         630+*                                                    2     0
             ----+----+----+----+----+----+----+----+----+---
             * may represent up to 22 counts
-
-
     *     _     _       __       _
       ___| |__ | | __  / _| __ _| |_
      / __| '_ \| |/ / | |_ / _` | __|
     | (__| | | |   <  |  _| (_| | |_
      \___|_| |_|_|\_\ |_|  \__,_|\__|
-
     ;
-
     * lets run the varification and validation macro on the normalized data;
     * add one char var voodoo requires at least one char and one numeric;
-
     data &pgm._vooDooRaw;
       retain a 'A';
       set taj.taj_simulate;
     run;quit;
-
     %include "c:/oto/oto_voodoo.sas";
-
-
     %utlvdoc
         (
         libname        = work
@@ -1706,14 +1681,10 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
         ,printto       = d:\taj\vdo\&data..txt
         ,Cleanup       = 1
         );
-
-
     Month                 N
     Variable      N    Miss         Minimum         Maximum            Mean          Median         Std Dev             Sum
     -----------------------------------------------------------------------------------------------------------------------
-
     _1          500       0     700.0000000     981.0000000     799.1420000     785.0000000      58.5825030       399571.00  Trend rever
-
     _2          500       0     678.0000000     976.0000000     805.3160000     808.0000000      43.2480859       402658.00
     _3          500       0     686.0000000     930.0000000     799.5280000     800.0000000      43.7068163       399764.00
     _4          500       0     666.0000000     913.0000000     796.6880000     795.5000000      42.8709049       398344.00
@@ -1725,7 +1696,6 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     _10         500       0     659.0000000     936.0000000     790.3580000     790.0000000      42.9943119       395179.00
     _11         500       0     651.0000000     968.0000000     792.1960000     793.0000000      49.6382665       396098.00
     _12         500       0     636.0000000     909.0000000     789.8680000     791.0000000      50.4258675       394934.00
-
     AGE         500       0      19.0000000      52.0000000      37.3580000      37.0000000       5.2176896        18679.00
     CARBS       500       0     -17.0000000      -3.0000000     -10.1140000     -10.0000000       2.3271948        -5057.00
     GENDER      500       0               0       1.0000000       0.5180000       1.0000000       0.5001763     259.0000000
@@ -1737,13 +1707,9 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     | '_ ` _ \ / _ \| '_ \| __| '_ \    __) |
     | | | | | | (_) | | | | |_| | | |  / __/
     |_| |_| |_|\___/|_| |_|\__|_| |_| |_____|
-
     ;
-
     Quantiles (Definition 5)
-
     Level         Quantile
-
     100% Max         976.0
     99%              903.5
     95%              871.5
@@ -1755,21 +1721,14 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     5%               731.0
     1%               698.0
     0% Min           678.0
-
-
             Extreme Observations
-
     ----Lowest----        ----Highest---
-
     Value      Obs        Value      Obs
-
       678      355          907      367
       688       48          917      265
       691      188          923      404
       695      449          941      276
       698      159          976      152
-
-
                               Histogram                         #  Boxplot
         970+*                                                   1     0
            .*                                                   1     0
@@ -1789,19 +1748,14 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
         670+*                                                   1     0
             ----+----+----+----+----+----+----+----+----+--
             * may represent up to 2 counts
-
     *                      _   _        __
      _ __ ___   ___  _ __ | |_| |__    / /_
     | '_ ` _ \ / _ \| '_ \| __| '_ \  | '_ \
     | | | | | | (_) | | | | |_| | | | | (_) |
     |_| |_| |_|\___/|_| |_|\__|_| |_|  \___/
-
     ;
-
     Quantiles (Definition 5)
-
     Level         Quantile
-
     100% Max         909.0
     99%              891.0
     95%              860.0
@@ -1813,20 +1767,14 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     5%               728.0
     1%               697.5
     0% Min           653.0
-
             Extreme Observations
-
     ----Lowest----        ----Highest---
-
     Value      Obs        Value      Obs
-
       653      320          893       21
       672        4          894      141
       673       48          897      155
       679      102          899       50
       693      434          909      107
-
-
                    Histogram              #  Boxplot
         905+*                             1     0
            .**                            4     |
@@ -1856,18 +1804,14 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
         655+*                             1     0
             ----+----+----+----+----+
             * may represent up to 2 counts
-
     *                      _   _       _ ____
      _ __ ___   ___  _ __ | |_| |__   / |___ \
     | '_ ` _ \ / _ \| '_ \| __| '_ \  | | __) |
     | | | | | | (_) | | | | |_| | | | | |/ __/
     |_| |_| |_|\___/|_| |_|\__|_| |_| |_|_____|
-
     ;
     Quantiles (Definition 5)
-
     Level         Quantile
-
     100% Max         909.0
     99%              901.0
     95%              874.5
@@ -1879,23 +1823,16 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
     5%               698.5
     1%               673.5
     0% Min           636.0
-
     The UNIVARIATE Procedure
     Variable:  _12
-
             Extreme Observations
-
     ----Lowest----        ----Highest---
-
     Value      Obs        Value      Obs
-
       636      188          902      208
       666      445          905       58
       669      499          907      374
       672      277          909      302
       673       48          909      382
-
-
                            Histogram                      #  Boxplot
         910+***                                           6     |
            .*******                                      13     |
@@ -1914,14 +1851,9 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
         630+*                                             1     0
             ----+----+----+----+----+----+----+----+-
             * may represent up to 2 counts
-
-
-
     Variable Correlations (Spearman)
-
     Month       Correlated    Correlation    Number    Spearman
     Variable    With Month        Coef       of Obs       P
-
       _7          _6            0.63447        500      0.3753
       _8          _6            0.61983        500      0.0358
       _6          _5            0.61352        500      0.5172
@@ -1942,6 +1874,63 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
       _10         _9            0.52236        500      0.8134
       _12         _11           0.52214        500      0.3081
 
+    Combining all pdf files in a directory
+
+     You need to downlaod ghostscript and copy the executable
+     gswin64c.exe into c:/pdf where your pdfs are located.
+
+    INPUT
+    =====
+
+      c:/pdf
+
+       gswin64c.exe   * ghostscript executable;
+
+       c:/pdf/iris_page1.pdf
+       c:/pdf/iris_page2.pdf
+       c:/pdf/iris_page3.pdf
+
+     EXAMLE OUTPUT  (One file with thre pages)
+
+       c:/pdf/iris.pdf
+
+    PROCESS
+    =======
+
+       x "cd c:/pdf";
+       x 'for %s in (*.pdf) do ECHO %s >> filename.txt';
+       x "gswin64c.exe -q -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=iris.pdf -dBATCH @filename.txt";
+
+    OUTPUT
+    ======
+
+      Single file with all pds combined
+
+       c:/pdf/iris.pdf
+
+     *                _              _       _
+     _ __ ___   __ _| | _____    __| | __ _| |_ __ _
+    | '_ ` _ \ / _` | |/ / _ \  / _` |/ _` | __/ _` |
+    | | | | | | (_| |   <  __/ | (_| | (_| | || (_| |
+    |_| |_| |_|\__,_|_|\_\___|  \__,_|\__,_|\__\__,_|
+
+    ;
+
+    ods pdf file="c:/pdf/iris_page1.pdf";
+    proc print data=sashelp.iris(obs=10 where=(species="Setosa"));
+    run;quit;
+    ods pdf close;
+
+    ods pdf file="c:/pdf/iris_page2.pdf";
+    proc print data=sashelp.iris(obs=10 where=(species="Versicolor"));
+    run;quit;
+    ods pdf close;
+
+    ods pdf file="c:/pdf/iris_page3.pdf";
+    proc print data=sashelp.iris(obs=10 where=(species="Virginica"));
+    run;quit;
+    ods pdf close;
+
     */
 
     *               _
@@ -1949,5 +1938,4 @@ Proc Traj example Trajectory of Food and Leisure Costs. Keywords: sas sql join m
      / _ \ '_ \ / _` |
     |  __/ | | | (_| |
      \___|_| |_|\__,_|
-
     ;
